@@ -13,12 +13,12 @@ NUMBG=length(R(:));
 R=R(:);
 O_est=zeros(size(I));
 for n=1:NUMBG
-    O_est=O_est+deconvmap(I,P,NUMIT,0,R(n));
+    O_est=O_est+deconvmap(I,P,NUMIT,R(n));
 end
 O_est=O_est/NUMBG;
 R_est=zeros(size(I));
 for n=1:NUMBG
-    R_est=(deconvmap(I,P,NUMIT,0,R(n))-O_est).^2+R_est;
+    R_est=(deconvmap(I,P,NUMIT,R(n))-O_est).^2+R_est;
 end
 R_est=sqrt(R_est/(NUMBG-1));
 O_opt=double((O_est-mean(R))>=NSIG*R_est).*O_est+...
