@@ -1,4 +1,4 @@
-function [O_opt,O_est,R_est]=deconvrndbkg(I,P,R,NUMIT,NSIG)
+function [O_avg,O_est,R_est]=deconvrndbkg(I,P,R,NUMIT)
 % DECONVRNDBKG deconvolution routine regularized by random background
 % constraints (semi-monte-carlo approach).
 % O_opt - Optimal estimate.
@@ -9,18 +9,13 @@ function [O_opt,O_est,R_est]=deconvrndbkg(I,P,R,NUMIT,NSIG)
 % R - A priori Residual map used to extract background knowledge.
 % NUMIT - Number of iterations for internal Bayesian deconvolution method.
 % NSIG - N*sigma significance.
-NUMBG=length(R(:));
+NUMBG=numel(R);
 R=R(:);
-O_est=zeros(size(I));
+O_est=zeros(numel(I),NUMBG);
 for n=1:NUMBG
-    O_est=O_est+deconvmap(I,P,NUMIT,R(n));
+    O_est(:,n)=reshape(deconvmap(I,P,NUMIT,R(n)),numel(I),[]);
 end
-O_est=O_est/NUMBG;
-R_est=zeros(size(I));
-for n=1:NUMBG
-    R_est=(deconvmap(I,P,NUMIT,R(n))-O_est).^2+R_est;
-end
-R_est=sqrt(R_est/(NUMBG-1));
-O_opt=double((O_est-mean(R))>=NSIG*R_est).*O_est+...
-    double((O_est-mean(R))<NSIG*R_est)*mean(R);
+O_avg=mean(O_est,2);
+R_est=std(size(I),1,2);
+% O_opt=double((O_est-mean(R))>=NSIG*R_est).*O_est+double((O_est-mean(R))<NSIG*R_est)*mean(R);
 return
