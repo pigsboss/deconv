@@ -12,9 +12,11 @@ function [O_avg,O_est,R_est]=deconvrndbkg(I,P,R,NUMIT)
 NUMBG=numel(R);
 R=R(:);
 O_est=zeros(numel(I),NUMBG);
-for n=1:NUMBG
+tic
+parfor n=1:NUMBG
     O_est(:,n)=reshape(deconvmap(I,P,NUMIT,R(n)),numel(I),[]);
 end
+toc
 O_avg=mean(O_est,2);
 R_est=std(size(I),1,2);
 % O_opt=double((O_est-mean(R))>=NSIG*R_est).*O_est+double((O_est-mean(R))<NSIG*R_est)*mean(R);
