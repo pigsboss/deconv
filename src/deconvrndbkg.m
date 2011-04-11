@@ -1,4 +1,4 @@
-function [O_avg,O_est,R_est]=deconvrndbkg(I,P,R,NUMIT)
+function [O_est,O_src,R_est]=deconvrndbkg(I,P,R,NUMIT)
 % DECONVRNDBKG deconvolution routine regularized by random background
 % constraints (semi-monte-carlo approach).
 % O_opt - Optimal estimate.
@@ -12,12 +12,13 @@ function [O_avg,O_est,R_est]=deconvrndbkg(I,P,R,NUMIT)
 NUMBG=numel(R);
 R=R(:);
 O_est=zeros(numel(I),NUMBG);
+O_src=O_est;
 tic
 parfor n=1:NUMBG
     O_est(:,n)=reshape(deconvmap(I,P,NUMIT,R(n)),numel(I),[]);
+    O_src(:,n)=O_est(:,n)-R(n);
 end
 toc
-O_avg=mean(O_est,2);
 R_est=std(size(I),1,2);
 % O_opt=double((O_est-mean(R))>=NSIG*R_est).*O_est+double((O_est-mean(R))<NSIG*R_est)*mean(R);
 return
