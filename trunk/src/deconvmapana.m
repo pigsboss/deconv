@@ -15,7 +15,7 @@ for k=1:NUMIT
     Js(:,2*(k-1)+1)=J(:);
     Rs(:,2*(k-1)+1)=R(:);
 %   subplot(4,6,(k-1)*2+1),plot(J-R)
-    subplot(5,8,k),plot(J-R)
+    subplot(4,5,k),plot(J-R),title(num2str(k))
     drawnow
     J=J.*double(J>=BG)+BG.*double(J<BG);
     R=R.*double(R>=BG)+BG.*double(R<BG);
