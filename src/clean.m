@@ -11,7 +11,7 @@ for k=1:N
     cmap=cmap+gain*beam;
     beam=imfilter(beam,psf,'circular');
     rmap=rmap-gain*beam;
-    sigma(k)=std(rmap);
+    sigma(k)=std(rmap(:));
     if k>1
         if sigma(k)>sigma(k-1)
             break
