@@ -15,7 +15,7 @@ O_est=zeros(numel(I),NUMBG);
 O_src=O_est;
 tic
 parfor n=1:NUMBG
-    O_est(:,n)=reshape(deconvmap(I,P,NUMIT,R(n)),numel(I),[]);
+    O_est(:,n)=reshape(deconvmap(I,P,R(n),NUMIT),numel(I),[]);
     O_src(:,n)=O_est(:,n)-R(n);
 end
 toc
