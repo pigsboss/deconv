@@ -1,4 +1,4 @@
-function [x,cts]=mostprob(X,nbins)
+function [x_ll,x_ul,cts]=mostprob(X,nbins)
 X=sort(X(:));
 w=(max(X)-min(X))/nbins;
 bins=min(X)+(0:nbins)*w;
@@ -14,5 +14,6 @@ for k=1:numel(X)
 end
 [~,x]=max(cts);
 bins(nbins+1)=max(X);
-x=0.5*(bins(x)+bins(x+1));
+x_ll=bins(x);
+x_ul=bins(x+1);
 return
