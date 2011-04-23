@@ -6,11 +6,13 @@ PSF=PSF(:);
 %I_obs=zeros(numel(O),nummc);
 O_map=zeros(numel(O),nummc);
 bg=zeros(1,nummc);
+numloop=zeros(1,nummc);
 tic
 parfor k=1:nummc
     I_obs=imconv(normrnd(O*exposure,sqrt(O*exposure)),PSF)+...
         normrnd(0,sig_obs,size(O));
     [~,rmap,sig_clean]=clean(I_obs,PSF,loopgain,maxnumloop);
+    numloop(k)=sum(double(sig_clean>0));
     if sig_clean(maxnumloop)~=0
         exit('max_num_loop for CLEAN algorithm is too low.')
     end
@@ -19,7 +21,8 @@ parfor k=1:nummc
 end
 toc
 result=struct('bkg',bg,...
-    'map',O_map);
+    'map',O_map,...
+    'clean_numloop',numloop);
 save(['mdmc_exp=',num2str(numel(exposure)),...
     '_obsnoise=',num2str(sig_obs),...
     '_mcloop=',num2str(nummc),...
