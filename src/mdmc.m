@@ -6,6 +6,7 @@ PSF=PSF(:);
 %I_obs=zeros(numel(O),nummc);
 O_map=zeros(numel(O),nummc);
 bg=zeros(1,nummc);
+tic
 parfor k=1:nummc
     I_obs=imconv(normrnd(O*exposure,sqrt(O*exposure)),PSF)+...
         normrnd(0,sig_obs,size(O));
@@ -16,7 +17,8 @@ parfor k=1:nummc
     bg(k)=mean(rmap);
     O_map(:,k)=deconvmap(I_obs,PSF,bg(k),nummap);
 end
-result=struct('backgrounds',bg,...
+toc
+result=struct('bkg',bg,...
     'map',O_map);
 save(['mdmc_exp=',num2str(numel(exposure)),...
     '_obsnoise=',num2str(sig_obs),...
