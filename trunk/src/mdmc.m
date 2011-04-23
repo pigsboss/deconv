@@ -14,7 +14,7 @@ parfor k=1:nummc
         exit('max_num_loop for CLEAN algorithm is too low.')
     end
     bg(k)=mean(rmap);
-    O_map(:,k)=deconvmap(I_obs,P,bg(k),nummap);
+    O_map(:,k)=deconvmap(I_obs,PSF,bg(k),nummap);
 end
 result=struct('backgrounds',bg,...
     'map',O_map);
