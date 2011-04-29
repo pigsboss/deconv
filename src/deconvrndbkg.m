@@ -19,5 +19,5 @@ parfor n=1:NUMBG
     O_src(:,n)=O_est(:,n)-RES(n);
 end
 toc
-save(['mc_',num2str(numel(RES)),'x',num2str(NUMIT)])
+save(['mc_',num2str(numel(RES)),'x',num2str(NUMIT)],'-v7.3')
 return
